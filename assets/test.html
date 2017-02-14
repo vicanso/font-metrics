@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="cleartype" content="on">
+    <script src="jquery-3.1.1.min.js"></script>
+    <style>
+      #words-wrapper {
+        width: 100%;
+        height: 400px;
+        border: 1px solid #ddd;
+      }
+      #startToCheck {
+        background: linear-gradient(to bottom,rgba(255,255,255,.1),rgba(255,255,255,0)) left no-repeat,center no-repeat #137cbd;
+        border-color: rgba(16,22,26,.1) rgba(16,22,26,.1) rgba(16,22,26,.3);
+        box-shadow: 0 1px 1px rgba(16,22,26,.2);
+        background-clip: border-box;
+        color: #fff;
+        display: block;
+        line-height: 40px;
+        text-align: center;
+        text-decoration: none;
+        margin: 15px 0;
+      }
+      #font-setting {
+        line-height: 30px;
+        margin-top: 15px;
+        width: 100%;
+        border: 1px solid #ddd;
+      }
+      #result p {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="words-wrapper" placeholder="Please input the test words"></textarea>
+    <input id="font-setting" type="text" placeholder="font setting" />
+    <a href="javascript:;" id="startToCheck">Start To Check</a>
+    <div id="result"></div>
+  </body>
+  <script>
+    $('#startToCheck').click(function() {
+      var text = $('#words-wrapper').val().trim();
+      if (!text) {
+        return alert('Please input test words first');
+      }
+      var fontSetting = $('#font-setting').val().trim();
+      var obj = $('<span />').css('font', fontSetting).appendTo('body');
+      $('#result').html('Checking...');
+      setTimeout(function() {
+        var result = {};
+        var max = 0;
+        text.split('').map(function(ch) {
+          var width = obj.text(ch).width();
+          if (!result[width]) {
+            result[width] = [];
+          }
+          result[width].push(ch);
+          if (max < result[width].length) {
+            max = result[width].length;
+          }
+        });
+        obj.remove();
+        var html = '';
+        jQuery.each(result, (width, items) => {
+          html += ('<p>fontSize:' + width + 'px count:' + items.length);
+          html += (' words:' + items.join(','));
+          html += '</p>';
+        });
+        $('#result').html(html);
+      }, 30);
+    });
+  </script>
+</html>
