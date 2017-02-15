@@ -18,7 +18,7 @@
     "url": "https://github.com/vicanso/font-metrics.git"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.0.0"
   },
   "devDependencies": {
     "eslint": "^3.12.2",
