@@ -16,6 +16,8 @@
         background: #c3c0b9;
         position: relative;
         color: #282828;
+        text-align: justify;
+        padding: 5px;
       }
       .content .bar {
         line-height: 20px;
@@ -29,24 +31,24 @@
         color: #fff;
       }
       .iPhone6P .content {
-        width: 414px;
-        height: 736px;
+        width: 404px;
+        height: 726px;
       }
       .iPhone6 .content {
-        width: 375px;
-        height: 667px;
+        width: 365px;
+        height: 657px;
       }
       .iPhone5 .content {
-        width: 320px;
-        height: 568px;
+        width: 310px;
+        height: 558px;
       }
       .galaxyS5 .content {
-        width: 360px;
-        height: 640px;
+        width: 350px;
+        height: 630px;
       }
       .nexus5X .content {
-        width: 412px;
-        height: 732px;
+        width: 402px;
+        height: 722px;
       }
     </style>
   </head>

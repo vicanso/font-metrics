@@ -54,8 +54,11 @@
       setTimeout(function() {
         var result = {};
         var max = 0;
-        text.split('').map(function(ch) {
-          var width = obj.text(ch).width();
+        text.split('').forEach(function(ch) {
+          var width = Math.ceil(obj.text(ch).width());
+          if (!width) {
+            return;
+          }
           if (!result[width]) {
             result[width] = [];
           }
@@ -66,11 +69,31 @@
         });
         obj.remove();
         var html = '';
-        jQuery.each(result, (width, items) => {
-          html += ('<p>fontSize:' + width + 'px count:' + items.length);
-          html += (' words:' + items.join(','));
-          html += '</p>';
+        var arr = [];
+        jQuery.each(result, function (width, items)  {
+          arr.push({
+            width: parseInt(width, 10),
+            items: items,
+          });
         });
+        arr.sort(function(item1, item2) {
+          return item1.width - item2.width;
+        });
+        var json = {};
+        jQuery.each(arr, function(i, data)  {
+          var items = data.items;
+          var width = data.width;
+          html += ('<p>fontSize:' + width + 'px count:' + items.length);
+          html += (' words:' + items.join(' '));
+          html += '</p>';
+          if (i === arr.length - 1) {
+            return;
+          }
+          jQuery.each(items, function(i, item) {
+            json[item] = width;
+          });
+        });
+        html = '<pre>' + JSON.stringify(json, null, 2) + '</pre>' + html;
         $('#result').html(html);
       }, 30);
     });

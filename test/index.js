@@ -5,9 +5,11 @@ const path = require('path');
 const assert = require('assert');
 
 const FontMetrics = require('..');
+// set font-size is 16px, these word is not 16px
+const specialWords = require('../assets/special-words');
+
 const text = fs.readFileSync(path.join(__dirname, '../assets/text.txt'), 'utf8');
 const template = fs.readFileSync(path.join(__dirname, '../assets/page-view.tpl'), 'utf8');
-
 describe('font-metrics', () => {
   it('get content of page success', (done) => {
     const fontMetrics = new FontMetrics();
@@ -15,6 +17,7 @@ describe('font-metrics', () => {
       width: 375,
       height: 667,
     };
+    fontMetrics.getFontSize = () => 16;
     fontMetrics.data = text.trim();
     const composing = fontMetrics.getComposing();
     assert.equal(composing.length, 6);
@@ -58,20 +61,13 @@ describe('font-metrics', () => {
       const fontMetrics = new FontMetrics({
         fontSize,
       });
+      // the content will set padding:5px
       fontMetrics.region = {
-        width: device.width,
-        height: device.height,
+        width: device.width - 10,
+        height: device.height - 10,
       };
       fontMetrics.data = text.trim();
-      fontMetrics.getCustomFontSize = (ch) => {
-        if (ch.charCodeAt(0) < 0xff) {
-          return (fontSize / 2) + 2;
-        } else if (['“', ',', '”'].indexOf(ch) !== -1) {
-          return (fontSize / 2) + 1;
-        }
-        return 0;
-      }
-      const arr = fontMetrics.toHTML();
+      fontMetrics.getFontSize = ch => specialWords[ch] || 16;
       const html = fontMetrics.toHTML()
         .map(item => `<div class="content">
           <div class="bar">${device.name}</div>${item}
