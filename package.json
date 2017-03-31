@@ -1,5 +1,5 @@
 {
-  "name": "font-metrics",
+  "name": "web-font-metrics",
   "description": "get the composing of text",
   "version": "1.0.0",
   "author": "Tree Xie <vicansocanbico@gmail.com>",
