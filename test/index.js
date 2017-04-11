@@ -60,6 +60,7 @@ describe('font-metrics', () => {
       const fontSize = 16;
       const fontMetrics = new FontMetrics({
         fontSize,
+        forbiddenFirstLetters: '，。！？'.split(''),
       });
       // the content will set padding:5px
       fontMetrics.region = {
