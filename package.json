@@ -1,9 +1,8 @@
 {
   "name": "web-font-metrics",
   "description": "get the composing of text",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "author": "Tree Xie <vicansocanbico@gmail.com>",
-  "main": "./lib/font-metrics",
   "keywords": [
     "font-metrics",
     "composing"
@@ -21,6 +20,7 @@
     "node": ">=6.0.0"
   },
   "devDependencies": {
+    "canvas": "^2.0.0-alpha.5",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
@@ -28,8 +28,5 @@
     "eslint-plugin-react": "^6.8.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.0"
-  },
-  "dependencies": {
-    "lodash": "^4.17.4"
   }
 }
