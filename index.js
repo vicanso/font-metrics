@@ -7,35 +7,43 @@ function getCanvasFillText(content, start, options) {
     height,
     fontSize,
     fontFamily,
-    lineHeight,
-    paragraphSpacing,
+    color,
   } = options;
   canvas.width = width;
   canvas.height = height;
+  const paragraphSpacing = options.paragraphSpacing || 18;
+  const lineHeight = options.lineHeight || (fontSize * 1.5);
   const ctx = canvas.getContext('2d');
-  ctx.font = `${fontSize}px ${fontFamily}`;
+  ctx.font = `${fontSize}px ${fontFamily}`.trim();
+  if (color) {
+    ctx.fillStyle = color;
+  }
   const defaultStartOffset = 2 * fontSize;
   const prevCh = content[start - 1];
   let x = (!prevCh || prevCh === '\n') ? defaultStartOffset : 0;
-  let y = lineHeight;
+  let y = fontSize;
   let end;
+  
   for (end = start; end < content.length; end += 1) {
-    // 如果已经到达最底，换页，将end回退一个字符
-    if (y > height) {
-      end -= 1;
-      break;
-    }
     const ch = content[end];
     // 如果是换行符，x缩进两个字符，y加一行并加上段落高
     if (ch === '\n') {
       x = defaultStartOffset;
       y += (lineHeight + paragraphSpacing);
+      // 如果已经到达最底，换页，将end回退一个字符
+      if (y > height) {
+        break;
+      }
     } else {
       // 计算该字符的显示宽度
       const chWidth = ctx.measureText(ch).width;
       if (chWidth + x > width) {
         x = 0;
         y += lineHeight;
+      }
+      // 如果已经到达最底，换页，将end回退一个字符
+      if (y > height) {
+        break;
       }
       ctx.fillText(ch, x, y);
       x += chWidth;
