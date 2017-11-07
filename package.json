@@ -1,7 +1,7 @@
 {
   "name": "web-font-metrics",
   "description": "get the composing of text",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Tree Xie <vicansocanbico@gmail.com>",
   "keywords": [
     "font-metrics",

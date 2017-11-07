@@ -1,36 +1,47 @@
-
 function getCanvasFillText(content, start, options) {
   // eslint-disable-next-line
   const canvas = document.createElement('canvas');
   const {
-    width,
-    height,
-    fontSize,
     fontFamily,
     color,
+    devicePixelRatio,
   } = options;
+
+  const ctx = canvas.getContext('2d');
+  const backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+    ctx.mozBackingStorePixelRatio ||
+    ctx.msBackingStorePixelRatio ||
+    ctx.oBackingStorePixelRatio ||
+    ctx.backingStorePixelRatio || 1;
+  const ratio = (devicePixelRatio || 1) / backingStoreRatio;
+  const width = options.width * ratio;
+  const height = options.height * ratio;
+  const paragraphSpacing = ratio * (options.paragraphSpacing || 18);
+  const fontSize = ratio * options.fontSize;
+  const fontWeight = options.fontWeight || 'normal';
+  const lineHeight = ratio * (options.lineHeight || Math.ceil(options.fontSize * 1.5));
   canvas.width = width;
   canvas.height = height;
-  const paragraphSpacing = options.paragraphSpacing || 18;
-  const lineHeight = options.lineHeight || (fontSize * 1.5);
-  const ctx = canvas.getContext('2d');
-  ctx.font = `${fontSize}px ${fontFamily}`.trim();
+  ctx.textBaseline = 'bottom';
+  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily || 'sans-serif'}`;
   if (color) {
     ctx.fillStyle = color;
   }
   const defaultStartOffset = 2 * fontSize;
   const prevCh = content[start - 1];
   let x = (!prevCh || prevCh === '\n') ? defaultStartOffset : 0;
-  let y = fontSize;
+  let y = lineHeight;
   let end;
-  
   for (end = start; end < content.length; end += 1) {
     const ch = content[end];
     // 如果是换行符，x缩进两个字符，y加一行并加上段落高
     if (ch === '\n') {
-      x = defaultStartOffset;
-      y += (lineHeight + paragraphSpacing);
-      // 如果已经到达最底，换页，将end回退一个字符
+      // 如果是新的一页的第一个字符，直接跳过
+      if (start !== end) {
+        x = defaultStartOffset;
+        y += (lineHeight + paragraphSpacing);
+      }
+      // 如果已经到达最底，换页
       if (y > height) {
         break;
       }
@@ -41,7 +52,7 @@ function getCanvasFillText(content, start, options) {
         x = 0;
         y += lineHeight;
       }
-      // 如果已经到达最底，换页，将end回退一个字符
+      // 如果已经到达最底，换页
       if (y > height) {
         break;
       }
@@ -50,7 +61,9 @@ function getCanvasFillText(content, start, options) {
     }
   }
   return {
+    start,
     end,
+    ratio,
     canvas,
   };
 }
