@@ -7,10 +7,13 @@ require('./mock-canvas');
 const fontMetrics = require('..');
 
 const text = fs.readFileSync(path.join(__dirname, '../assets/text.txt'), 'utf8');
+const tpl = fs.readFileSync(path.join(__dirname, '../assets/page-view.tpl'), 'utf8');
+// eslint-disable-next-line
 describe('font-metrics', () => {
-  it('get content of page success', function (done) {
+  // eslint-disable-next-line
+  it('get image page view success', function (done) {
     this.timeout(5000);
-    const canvasList = fontMetrics.getCanvasList(text, {
+    const canvasList = fontMetrics.getFillTextList(text, {
       width: 404,
       height: 726,
       fontSize: 18,
@@ -26,4 +29,27 @@ describe('font-metrics', () => {
     });
     setTimeout(done, 3000);
   });
+
+  // eslint-disable-next-line
+  it('get html page view success', (done) => {
+    const htmlList = fontMetrics.getFillTextList(text, {
+      width: 404,
+      height: 726,
+      fontSize: 18,
+      paragraphSpacing: 18,
+      lineHeight: 24,
+      fontFamily: 'sans-serif',
+      fontWeight: 'bold',
+      devicePixelRatio: 1,
+      color: '#333',
+      format: 'html',
+    });
+    const html = htmlList.map((item) => {
+      const data = `<div class="content">${item.html}</div>`;
+      return data;
+    }).join('');
+    fs.writeFileSync(path.join(__dirname, '../assets/page-view.html'), tpl.replace('{CONTENT}', html));
+    done();
+  });
 });
+
