@@ -82,6 +82,12 @@ function getFillText(content, start, options) {
       x += chWidth;
     }
   }
+  if (str) {
+    contentList.push({
+      data: str,
+      indent,
+    });
+  }
   const result = {
     start,
     end,
@@ -92,7 +98,7 @@ function getFillText(content, start, options) {
     let html = '';
     const style = {
       margin: 0,
-      'padding': `0 0 ${paragraphSpacing}px 0`,
+      padding: `0 0 ${paragraphSpacing}px 0`,
       'line-height': `${lineHeight}px`,
       'font-size': `${fontSize}px`,
       'font-weight': fontWeight,
