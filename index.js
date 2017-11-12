@@ -1,4 +1,4 @@
-function getFillText(content, start, options) {
+export function getFillText(content, start, options) {
   // eslint-disable-next-line
   const canvas = document.createElement('canvas');
   const {
@@ -132,7 +132,7 @@ function getFillText(content, start, options) {
   return result;
 }
 
-function getFillTextList(content, options) {
+export function getFillTextList(content, options) {
   let start = 0;
   const max = content.length;
   let isEnd = false;
@@ -149,6 +149,3 @@ function getFillTextList(content, options) {
   }
   return list;
 }
-
-exports.getFillTextList = getFillTextList;
-exports.getFillText = getFillText;
