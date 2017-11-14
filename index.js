@@ -50,10 +50,10 @@ export function getFillText(content, start, options) {
           data: '\n',
         });
         str = '';
-        x = defaultStartOffset;
-        indent = x;
         y += (lineHeight + paragraphSpacing);
       }
+      x = defaultStartOffset;
+      indent = x;
       // 如果已经到达最底，换页
       if (y > height) {
         break;
