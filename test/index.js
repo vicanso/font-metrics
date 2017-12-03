@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('./mock-canvas');
 
-const fontMetrics = require('..');
+const FontMetrics = require('..');
 
 const text = fs.readFileSync(path.join(__dirname, '../assets/text.txt'), 'utf8');
 const tpl = fs.readFileSync(path.join(__dirname, '../assets/page-view.tpl'), 'utf8');
@@ -13,7 +13,7 @@ describe('font-metrics', () => {
   // eslint-disable-next-line
   it('get image page view success', function (done) {
     this.timeout(5000);
-    const canvasList = fontMetrics.getFillTextList(text, {
+    const fontMetrics = new FontMetrics({
       width: 404,
       height: 726,
       fontSize: 18,
@@ -24,6 +24,7 @@ describe('font-metrics', () => {
       devicePixelRatio: 2,
       color: '#333',
     });
+    const canvasList = fontMetrics.getFillTextList(text);
     canvasList.forEach((item, index) => {
       item.canvas.pngStream().pipe(fs.createWriteStream(`./assets/${index}.png`));
     });
@@ -32,7 +33,7 @@ describe('font-metrics', () => {
 
   // eslint-disable-next-line
   it('get html page view success', (done) => {
-    const htmlList = fontMetrics.getFillTextList(text, {
+    const fontMetrics = new FontMetrics({
       width: 404,
       height: 726,
       fontSize: 18,
@@ -43,7 +44,9 @@ describe('font-metrics', () => {
       devicePixelRatio: 1,
       color: '#333',
       format: 'html',
+      cache: true,
     });
+    const htmlList = fontMetrics.getFillTextList(text);
     const html = htmlList.map((item) => {
       const data = `<div class="content">${item.html}</div>`;
       return data;
